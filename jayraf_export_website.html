@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jayraf Export</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#2D2B7A;
+  --orange:#F57C20;
+  --navy-light:#3D3B8A;
+  --navy-dark:#1a1860;
+  --white:#ffffff;
+  --gray-50:#f8f9ff;
+  --gray-100:#f0f1fa;
+  --gray-200:#e0e1f0;
+  --gray-500:#6b6c8a;
+  --gray-700:#3a3b5c;
+  --text-primary:#1a1860;
+  --text-secondary:#6b6c8a;
+  --radius-md:12px;
+  --radius-lg:20px;
+  --radius-xl:32px;
+  --shadow-sm:0 2px 12px rgba(45,43,122,0.08);
+  --shadow-md:0 8px 32px rgba(45,43,122,0.14);
+  --shadow-lg:0 20px 60px rgba(45,43,122,0.18);
+}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--text-primary);overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:'Syne',sans-serif}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-200);padding:0 5%}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;max-width:1280px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo img{height:44px;object-fit:contain}
+.nav-logo-text{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-0.5px}
+.nav-logo-sub{font-size:11px;color:var(--orange);font-weight:600;letter-spacing:2px;text-transform:uppercase;display:block;line-height:1}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{text-decoration:none;color:var(--gray-500);font-size:14px;font-weight:500;transition:color 0.2s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:var(--navy)}
+.nav-cta{background:var(--orange);color:white;padding:10px 24px;border-radius:40px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.nav-cta:hover{background:#d96e10;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:24px;height:2px;background:var(--navy);border-radius:2px;transition:all 0.3s}
+
+/* SECTIONS */
+section{display:none;min-height:100vh;padding-top:72px}
+section.active{display:block}
+
+/* HERO */
+#home{background:linear-gradient(135deg,#f8f9ff 0%,#ede8ff 50%,#fff3e8 100%);position:relative;overflow:hidden}
+.hero-bg-circle{position:absolute;border-radius:50%;opacity:0.06}
+.hero-bg-circle.c1{width:600px;height:600px;background:var(--navy);top:-200px;right:-100px}
+.hero-bg-circle.c2{width:400px;height:400px;background:var(--orange);bottom:-100px;left:-150px}
+.hero-inner{max-width:1280px;margin:0 auto;padding:80px 5% 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;min-height:calc(100vh - 72px);position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--gray-200);border-radius:40px;padding:8px 18px;font-size:13px;color:var(--navy);font-weight:500;margin-bottom:24px;box-shadow:var(--shadow-sm)}
+.hero-badge span{width:8px;height:8px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+h1.hero-title{font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.1;color:var(--navy);letter-spacing:-2px;margin-bottom:20px}
+h1.hero-title .accent{color:var(--orange)}
+.hero-desc{font-size:17px;color:var(--gray-500);line-height:1.7;margin-bottom:36px;max-width:480px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:var(--orange);color:white;padding:14px 32px;border-radius:40px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 20px rgba(245,124,32,0.35)}
+.btn-primary:hover{background:#d96e10;transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,124,32,0.4)}
+.btn-secondary{background:white;color:var(--navy);padding:14px 32px;border-radius:40px;font-size:15px;font-weight:600;border:2px solid var(--gray-200);cursor:pointer;transition:all 0.25s}
+.btn-secondary:hover{border-color:var(--navy);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:32px;margin-top:48px;flex-wrap:wrap}
+.hero-stat{text-align:left}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--navy);line-height:1}
+.hero-stat-label{font-size:13px;color:var(--gray-500);margin-top:4px}
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center}
+.globe-container{width:420px;height:420px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 30px 80px rgba(45,43,122,0.35);overflow:hidden}
+.globe-container::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.1),transparent 60%);border-radius:50%}
+.globe-logo{width:300px;height:300px;object-fit:contain;position:relative;z-index:1;filter:brightness(1.2)}
+.globe-orbit{position:absolute;border:1px dashed rgba(245,124,32,0.3);border-radius:50%}
+.globe-orbit.o1{width:480px;height:480px}
+.globe-orbit.o2{width:560px;height:560px}
+.orbit-dot{position:absolute;width:10px;height:10px;background:var(--orange);border-radius:50%;top:50%;transform-origin:0 0}
+.floating-card{position:absolute;background:white;border-radius:var(--radius-md);padding:12px 16px;box-shadow:var(--shadow-md);font-size:13px;font-weight:500;color:var(--navy);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.floating-card.fc1{top:60px;right:-30px;animation:float1 4s ease-in-out infinite}
+.floating-card.fc2{bottom:100px;left:-40px;animation:float2 5s ease-in-out infinite}
+.floating-card.fc3{top:50%;right:-50px;animation:float1 3.5s ease-in-out infinite 0.5s}
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.fc-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.fc-icon.orange{background:#fff3e8}
+.fc-icon.navy{background:#edefff}
+.fc-label{font-size:11px;color:var(--gray-500);margin-top:1px}
+
+/* CATEGORIES STRIP */
+.categories-strip{background:var(--navy);padding:20px 5%}
+.categories-strip-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:40px;overflow-x:auto;scrollbar-width:none}
+.categories-strip-inner::-webkit-scrollbar{display:none}
+.cat-strip-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.7);font-size:14px;font-weight:500;white-space:nowrap;cursor:pointer;transition:color 0.2s}
+.cat-strip-item:hover{color:var(--orange)}
+.cat-strip-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;opacity:0.5}
+
+/* TRUST BAR */
+.trust-bar{background:var(--gray-50);padding:40px 5%;border-bottom:1px solid var(--gray-200)}
+.trust-bar-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:12px}
+.trust-icon{width:44px;height:44px;background:white;border-radius:12px;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;font-size:20px}
+.trust-text{font-size:14px;color:var(--gray-700);font-weight:500}
+.trust-sub{font-size:12px;color:var(--gray-500)}
+
+/* SECTION HEADERS */
+.section-label{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;color:var(--navy);line-height:1.15;letter-spacing:-1px;margin-bottom:16px}
+.section-desc{font-size:16px;color:var(--gray-500);line-height:1.7;max-width:600px}
+
+/* ABOUT PAGE */
+#about{background:white}
+.about-inner{max-width:1280px;margin:0 auto;padding:80px 5%}
+.about-hero{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:80px}
+.about-visual{position:relative}
+.about-img-wrap{background:linear-gradient(135deg,#edefff,#fff3e8);border-radius:var(--radius-xl);padding:40px;display:flex;align-items:center;justify-content:center;min-height:380px}
+.about-logo{width:280px;object-fit:contain}
+.about-badge-wrap{position:absolute;bottom:-20px;right:-20px;background:var(--orange);border-radius:var(--radius-lg);padding:20px 24px;color:white;box-shadow:var(--shadow-md)}
+.about-badge-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;line-height:1}
+.about-badge-text{font-size:13px;opacity:0.9;margin-top:4px}
+.about-values{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
+.value-card{background:var(--gray-50);border-radius:var(--radius-lg);padding:28px;border:1px solid var(--gray-200);transition:all 0.25s}
+.value-card:hover{background:white;box-shadow:var(--shadow-md);transform:translateY(-4px)}
+.value-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.value-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.value-desc{font-size:14px;color:var(--gray-500);line-height:1.6}
+.partner-banner{background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius-xl);padding:48px;display:flex;align-items:center;justify-content:space-between;gap:32px;margin-top:60px;flex-wrap:wrap}
+.partner-text h3{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:white;margin-bottom:8px}
+.partner-text p{color:rgba(255,255,255,0.7);font-size:15px}
+.partner-link{background:var(--orange);color:white;padding:14px 32px;border-radius:40px;font-size:14px;font-weight:600;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s}
+.partner-link:hover{background:#d96e10;transform:translateY(-2px)}
+
+/* SERVICES PAGE */
+#services{background:var(--gray-50)}
+.services-inner{max-width:1280px;margin:0 auto;padding:80px 5%}
+.services-header{text-align:center;margin-bottom:60px}
+.categories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.cat-card{background:white;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-200);transition:all 0.3s;cursor:pointer;position:relative}
+.cat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-6px)}
+.cat-card-header{padding:32px;background:linear-gradient(135deg,var(--navy),var(--navy-light));position:relative;overflow:hidden}
+.cat-card-header::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.05);top:-60px;right:-40px}
+.cat-icon-big{font-size:40px;margin-bottom:16px;display:block}
+.cat-card-header h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:white;margin-bottom:6px}
+.cat-card-header p{color:rgba(255,255,255,0.7);font-size:13px;line-height:1.5}
+.cat-card-body{padding:24px 32px}
+.cat-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:40px;padding:6px 14px;font-size:12px;color:var(--gray-700);font-weight:500;margin:4px;cursor:pointer;transition:all 0.2s}
+.cat-tag:hover{background:var(--navy);color:white;border-color:var(--navy)}
+.cat-explore-btn{width:100%;margin-top:16px;background:transparent;border:2px solid var(--gray-200);color:var(--navy);border-radius:40px;padding:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.cat-explore-btn:hover{background:var(--orange);border-color:var(--orange);color:white}
+
+/* PRODUCT DETAIL VIEW */
+#product-view{background:white;display:none}
+#product-view.active{display:block}
+.product-view-inner{max-width:1280px;margin:0 auto;padding:80px 5%}
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--navy);font-size:14px;font-weight:600;cursor:pointer;margin-bottom:40px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:40px;padding:10px 20px;transition:all 0.2s}
+.back-btn:hover{background:var(--navy);color:white}
+.product-view-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-bottom:60px}
+.product-img-placeholder{background:linear-gradient(135deg,#edefff,#fff3e8);border-radius:var(--radius-xl);min-height:400px;display:flex;align-items:center;justify-content:center;font-size:80px;border:2px dashed var(--gray-200)}
+.product-info h2{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--navy);margin-bottom:12px;letter-spacing:-1px}
+.product-cat-badge{display:inline-block;background:var(--navy);color:white;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:40px;margin-bottom:20px}
+.product-desc{font-size:15px;color:var(--gray-500);line-height:1.7;margin-bottom:28px}
+.product-specs{background:var(--gray-50);border-radius:var(--radius-lg);padding:24px;margin-bottom:28px}
+.product-spec-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-200);font-size:14px}
+.product-spec-row:last-child{border-bottom:none}
+.spec-label{color:var(--gray-500)}
+.spec-value{font-weight:600;color:var(--navy)}
+.inquiry-btn{background:var(--orange);color:white;padding:14px 32px;border-radius:40px;font-size:15px;font-weight:600;border:none;cursor:pointer;width:100%;transition:all 0.25s;margin-bottom:12px}
+.inquiry-btn:hover{background:#d96e10;transform:translateY(-2px)}
+.whatsapp-btn{background:#25D366;color:white;padding:14px 32px;border-radius:40px;font-size:15px;font-weight:600;border:none;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.25s;text-decoration:none}
+.whatsapp-btn:hover{background:#1db855;transform:translateY(-2px)}
+.products-list{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product-card{background:var(--gray-50);border-radius:var(--radius-md);padding:20px;border:1px solid var(--gray-200);cursor:pointer;transition:all 0.25s}
+.product-card:hover{background:white;box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.product-card-img{background:white;border-radius:12px;height:120px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:14px;border:1px solid var(--gray-200)}
+.product-card h4{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.product-card p{font-size:12px;color:var(--gray-500)}
+.product-card-arrow{color:var(--orange);font-size:20px;margin-top:10px}
+
+/* CONTACT PAGE */
+#contact{background:white}
+.contact-inner{max-width:1280px;margin:0 auto;padding:80px 5%}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px}
+.contact-left h2{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--navy);letter-spacing:-1px;margin-bottom:16px}
+.contact-left p{font-size:15px;color:var(--gray-500);line-height:1.7;margin-bottom:40px}
+.contact-info-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px}
+.contact-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.contact-info-text strong{display:block;color:var(--navy);font-weight:600;font-size:15px;margin-bottom:4px}
+.contact-info-text span{color:var(--gray-500);font-size:14px}
+.wa-contact-btn{background:#25D366;color:white;padding:14px 28px;border-radius:40px;font-size:15px;font-weight:600;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;text-decoration:none;transition:all 0.2s;margin-top:32px;width:fit-content}
+.wa-contact-btn:hover{background:#1db855;transform:translateY(-2px)}
+.contact-form-wrap{background:var(--gray-50);border-radius:var(--radius-xl);padding:40px;border:1px solid var(--gray-200)}
+.form-tabs{display:flex;gap:4px;background:var(--gray-200);border-radius:40px;padding:4px;margin-bottom:32px}
+.form-tab{flex:1;padding:10px 16px;border-radius:40px;border:none;background:transparent;font-size:14px;font-weight:500;color:var(--gray-500);cursor:pointer;transition:all 0.2s}
+.form-tab.active{background:white;color:var(--navy);font-weight:600;box-shadow:var(--shadow-sm)}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:white;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:14px;color:var(--navy);outline:none;transition:border 0.2s;font-family:'DM Sans',sans-serif}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--navy)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.submit-btn{width:100%;background:var(--orange);color:white;padding:14px;border-radius:40px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all 0.25s}
+.submit-btn:hover{background:#d96e10;transform:translateY(-2px)}
+
+/* WHATSAPP FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:9999;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,211,102,0.45);cursor:pointer;text-decoration:none;transition:all 0.2s}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(37,211,102,0.5)}
+.wa-float svg{width:30px;height:30px;fill:white}
+
+/* FOOTER */
+footer{background:var(--navy-dark);color:white;padding:60px 5% 32px}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:48px}
+.footer-brand img{height:44px;margin-bottom:16px}
+.footer-brand p{color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;max-width:260px}
+.footer-col h5{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:20px;color:white;letter-spacing:0.5px}
+.footer-col a{display:block;color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;margin-bottom:10px;transition:color 0.2s;cursor:pointer}
+.footer-col a:hover{color:var(--orange)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap:16px}
+.footer-bottom p{color:rgba(255,255,255,0.4);font-size:13px}
+.footer-bottom-right{display:flex;gap:20px}
+.footer-bottom-right a{color:rgba(255,255,255,0.4);font-size:13px;text-decoration:none;cursor:pointer}
+.footer-bottom-right a:hover{color:white}
+
+/* SUCCESS MSG */
+.success-msg{background:#e8f5e9;border:1px solid #c8e6c9;border-radius:var(--radius-md);padding:16px;color:#2e7d32;font-size:14px;font-weight:500;display:none;margin-top:16px}
+.success-msg.show{display:block}
+
+/* MOBILE */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;padding:60px 5% 40px}
+  .hero-visual{order:-1}
+  .globe-container{width:280px;height:280px}
+  .globe-logo{width:200px}
+  .globe-orbit{display:none}
+  .floating-card{display:none}
+  .categories-grid{grid-template-columns:1fr}
+  .about-hero{grid-template-columns:1fr}
+  .about-values{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none;position:absolute;top:72px;left:0;right:0;background:white;flex-direction:column;padding:20px 5%;box-shadow:var(--shadow-md);gap:16px}
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  .product-view-header{grid-template-columns:1fr}
+  .products-list{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .trust-bar-inner{flex-direction:column;align-items:flex-start}
+  .partner-banner{flex-direction:column}
+}
+@media(max-width:600px){
+  .about-values{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .products-list{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <img src="/mnt/user-data/uploads/Jayraf_log_no_bac_2.png" alt="Jayraf Export Logo" onerror="this.style.display='none'">
+      <div>
+        <span class="nav-logo-text">JayrafExport</span>
+        <span class="nav-logo-sub">Global Trade Partner</span>
+      </div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a onclick="showSection('home')" class="active" id="nav-home">Home</a>
+      <a onclick="showSection('about')" id="nav-about">About</a>
+      <a onclick="showSection('services')" id="nav-services">Services</a>
+      <a onclick="showSection('contact')" id="nav-contact">Contact</a>
+    </div>
+    <a class="nav-cta" onclick="showSection('contact')">Get Quote</a>
+    <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<section id="home" class="active">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span></span>
+        India's Trusted Export Partner
+      </div>
+      <h1 class="hero-title">Connecting India<br>to the <span class="accent">World</span><br>Since Day One</h1>
+      <p class="hero-desc">Premium exporter of Chemicals, Pharmaceuticals, Nutraceuticals, Agri Products, Medical Surgical & Ayurvedic Herbs — official partner of <strong>Ascovita.com</strong></p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showSection('services')">Explore Products</button>
+        <button class="btn-secondary" onclick="showSection('contact')">Book a Meeting</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">6+</div>
+          <div class="hero-stat-label">Product Categories</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">50+</div>
+          <div class="hero-stat-label">Countries Served</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">Quality Certified</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="globe-orbit o1"></div>
+      <div class="globe-orbit o2"></div>
+      <div class="globe-container">
+        <img class="globe-logo" src="/mnt/user-data/uploads/Jayraf_log_no_bac_1_page-0001-removebg-preview.png" alt="Jayraf Globe" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 200\'><circle cx=\'100\' cy=\'100\' r=\'90\' fill=\'%23F57C20\' opacity=\'0.3\'/><text x=\'100\' y=\'110\' text-anchor=\'middle\' fill=\'white\' font-size=\'48\' font-family=\'Arial\'>🌍</text></svg>'">
+      </div>
+      <div class="floating-card fc1">
+        <div class="fc-icon orange">🧪</div>
+        <div>
+          <div>Chemicals Export</div>
+          <div class="fc-label">Organic & Inorganic</div>
+        </div>
+      </div>
+      <div class="floating-card fc2">
+        <div class="fc-icon navy">💊</div>
+        <div>
+          <div>Pharmaceuticals</div>
+          <div class="fc-label">WHO-GMP Certified</div>
+        </div>
+      </div>
+      <div class="floating-card fc3">
+        <div class="fc-icon orange">🌿</div>
+        <div>
+          <div>Ayurvedic Herbs</div>
+          <div class="fc-label">100% Natural</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Strip -->
+  <div class="categories-strip">
+    <div class="categories-strip-inner">
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>🧪 Chemicals</span>
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>💊 Pharmaceuticals</span>
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>🌿 Nutraceuticals</span>
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>🌾 Agriculture</span>
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>🩺 Medical & Surgical</span>
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>🌱 Ayurvedic Herbs</span>
+      <span class="cat-strip-item" onclick="showSection('services')"><span class="cat-strip-dot"></span>🤝 Ascovita Partner</span>
+    </div>
+  </div>
+
+  <!-- Trust Bar -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item">
+        <div class="trust-icon">🏆</div>
+        <div>
+          <div class="trust-text">ISO Certified</div>
+          <div class="trust-sub">Quality Management</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🌍</div>
+        <div>
+          <div class="trust-text">Global Export</div>
+          <div class="trust-sub">50+ Countries</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🤝</div>
+        <div>
+          <div class="trust-text">Ascovita Partner</div>
+          <div class="trust-sub">Official Partnership</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🚢</div>
+        <div>
+          <div class="trust-text">Reliable Logistics</div>
+          <div class="trust-sub">Door-to-Door Delivery</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">📋</div>
+        <div>
+          <div class="trust-text">Full Documentation</div>
+          <div class="trust-sub">COA, MSDS & More</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer on home -->
+  <div style="background:var(--gray-50);padding:60px 5%;text-align:center">
+    <div style="max-width:600px;margin:0 auto">
+      <p class="section-label">Ready to Export?</p>
+      <h2 class="section-title" style="text-align:center">Start your global trade journey today</h2>
+      <p class="section-desc" style="margin:0 auto 32px;text-align:center">Get competitive pricing, fast documentation and reliable delivery to any country worldwide.</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary" onclick="showSection('contact')">Contact Us Now</button>
+        <a href="https://api.whatsapp.com/send?phone=917046834613" class="btn-secondary" style="text-decoration:none;padding:14px 32px;display:inline-block">💬 WhatsApp Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT PAGE -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-hero">
+      <div>
+        <p class="section-label">About Us</p>
+        <h2 class="section-title">India's Premier<br>Export House</h2>
+        <p class="section-desc" style="margin-bottom:24px">Jayraf Export is a trusted export company based in India, specializing in premium quality goods across six major categories. We bridge Indian manufacturers with global buyers, ensuring quality, compliance, and competitive pricing on every shipment.</p>
+        <p style="font-size:15px;color:var(--gray-500);line-height:1.7;margin-bottom:32px">As an official partner of <strong style="color:var(--navy)">Ascovita.com</strong>, we bring an added layer of trust and credibility to all pharmaceutical and nutraceutical exports. Our team of experts handles everything from product sourcing to final delivery.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="showSection('contact')">Work With Us</button>
+          <a href="https://ascovita.com" class="btn-secondary" style="text-decoration:none;padding:14px 32px;display:inline-block">Visit Ascovita.com</a>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-img-wrap">
+          <img class="about-logo" src="/mnt/user-data/uploads/Jayraf_log_no_bac_2.png" alt="Jayraf Export" onerror="this.style.display='none'">
+        </div>
+        <div class="about-badge-wrap">
+          <div class="about-badge-num">50+</div>
+          <div class="about-badge-text">Countries Served</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-values">
+      <div class="value-card">
+        <div class="value-icon">🌍</div>
+        <div class="value-title">Global Reach</div>
+        <div class="value-desc">We export to 50+ countries across Europe, Middle East, Africa, Americas and Asia Pacific with established trade networks.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">✅</div>
+        <div class="value-title">Quality Assurance</div>
+        <div class="value-desc">Every product undergoes rigorous quality testing. We provide COA, MSDS, and all required certifications with each shipment.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <div class="value-title">Fast Execution</div>
+        <div class="value-desc">Streamlined export processes, pre-arranged logistics partners and expert documentation team for swift order fulfillment.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Ascovita Partner</div>
+        <div class="value-desc">Official partnership with Ascovita.com strengthens our pharmaceutical and nutraceutical product portfolio globally.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💰</div>
+        <div class="value-title">Competitive Pricing</div>
+        <div class="value-desc">Direct manufacturer relationships allow us to offer India's best export prices without compromising quality.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📞</div>
+        <div class="value-title">Dedicated Support</div>
+        <div class="value-desc">Personal account manager for every client, available via WhatsApp, email or video call at any time zone.</div>
+      </div>
+    </div>
+
+    <div class="partner-banner">
+      <div class="partner-text">
+        <h3>🤝 Official Partner of Ascovita.com</h3>
+        <p>Enhancing pharmaceutical & nutraceutical exports with world-class product standards and compliance.</p>
+      </div>
+      <a href="https://ascovita.com" class="partner-link">Visit Ascovita.com →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES PAGE -->
+<section id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <p class="section-label">Our Products & Services</p>
+      <h2 class="section-title" style="text-align:center">Six Categories,<br>One Trusted Partner</h2>
+      <p class="section-desc" style="text-align:center;margin:0 auto">Premium Indian exports across pharmaceuticals, chemicals, agriculture and more — shipped worldwide with full documentation.</p>
+    </div>
+    <div class="categories-grid">
+
+      <div class="cat-card" onclick="showCategory('chemicals')">
+        <div class="cat-card-header">
+          <span class="cat-icon-big">🧪</span>
+          <h3>Chemicals</h3>
+          <p>Organic & Inorganic chemicals for industrial and laboratory use</p>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-tag">Organic Chemicals</span>
+          <span class="cat-tag">Inorganic Chemicals</span>
+          <span class="cat-tag">Solvents</span>
+          <span class="cat-tag">Acids & Bases</span>
+          <span class="cat-tag">Industrial Chemicals</span>
+          <button class="cat-explore-btn">Explore Category →</button>
+        </div>
+      </div>
+
+      <div class="cat-card" onclick="showCategory('pharma')">
+        <div class="cat-card-header" style="background:linear-gradient(135deg,#1a4d6e,#2d6b9a)">
+          <span class="cat-icon-big">💊</span>
+          <h3>Pharmaceuticals</h3>
+          <p>WHO-GMP certified medicines and API exports globally</p>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-tag">APIs (Active Pharma)</span>
+          <span class="cat-tag">Formulations</span>
+          <span class="cat-tag">Generic Medicines</span>
+          <span class="cat-tag">Tablets & Capsules</span>
+          <span class="cat-tag">Injectables</span>
+          <button class="cat-explore-btn">Explore Category →</button>
+        </div>
+      </div>
+
+      <div class="cat-card" onclick="showCategory('nutra')">
+        <div class="cat-card-header" style="background:linear-gradient(135deg,#1a5c3a,#2d8a5a)">
+          <span class="cat-icon-big">🌿</span>
+          <h3>Nutraceuticals</h3>
+          <p>Health supplements and functional nutrition products</p>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-tag">Vitamins & Minerals</span>
+          <span class="cat-tag">Protein Supplements</span>
+          <span class="cat-tag">Herbal Extracts</span>
+          <span class="cat-tag">Probiotics</span>
+          <span class="cat-tag">Omega-3 Products</span>
+          <button class="cat-explore-btn">Explore Category →</button>
+        </div>
+      </div>
+
+      <div class="cat-card" onclick="showCategory('agri')">
+        <div class="cat-card-header" style="background:linear-gradient(135deg,#5c4a00,#8a7000)">
+          <span class="cat-icon-big">🌾</span>
+          <h3>Agriculture Products</h3>
+          <p>Premium Indian grains, spices, and agri commodities</p>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-tag">Spices & Herbs</span>
+          <span class="cat-tag">Grains & Pulses</span>
+          <span class="cat-tag">Oil Seeds</span>
+          <span class="cat-tag">Fresh Produce</span>
+          <span class="cat-tag">Processed Foods</span>
+          <button class="cat-explore-btn">Explore Category →</button>
+        </div>
+      </div>
+
+      <div class="cat-card" onclick="showCategory('medical')">
+        <div class="cat-card-header" style="background:linear-gradient(135deg,#5c1a1a,#8a2d2d)">
+          <span class="cat-icon-big">🩺</span>
+          <h3>Medical & Surgical</h3>
+          <p>High-quality medical devices and surgical instruments</p>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-tag">Surgical Instruments</span>
+          <span class="cat-tag">Diagnostic Equipment</span>
+          <span class="cat-tag">PPE & Disposables</span>
+          <span class="cat-tag">Hospital Supplies</span>
+          <span class="cat-tag">Wound Care</span>
+          <button class="cat-explore-btn">Explore Category →</button>
+        </div>
+      </div>
+
+      <div class="cat-card" onclick="showCategory('ayurveda')">
+        <div class="cat-card-header" style="background:linear-gradient(135deg,#3a1a5c,#5a2d8a)">
+          <span class="cat-icon-big">🌱</span>
+          <h3>Ayurvedic Herbs</h3>
+          <p>Pure, certified Ayurvedic herbs and botanical extracts</p>
+        </div>
+        <div class="cat-card-body">
+          <span class="cat-tag">Ashwagandha</span>
+          <span class="cat-tag">Turmeric</span>
+          <span class="cat-tag">Neem Products</span>
+          <span class="cat-tag">Tulsi & Brahmi</span>
+          <span class="cat-tag">Herbal Powders</span>
+          <button class="cat-explore-btn">Explore Category →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT DETAIL VIEW -->
+<section id="product-view">
+  <div class="product-view-inner">
+    <button class="back-btn" onclick="showSection('services')">← Back to Services</button>
+    <div id="product-view-content"></div>
+  </div>
+</section>
+
+<!-- CONTACT PAGE -->
+<section id="contact">
+  <div class="contact-inner">
+    <div style="margin-bottom:60px">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-title">Ready to Start<br>Exporting?</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-left">
+        <p>Whether you want a product inquiry, an online meeting, or just want to know more — we're here to help you grow globally.</p>
+        <div class="contact-info-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-info-text">
+            <strong>Location</strong>
+            <span>India — Exporting Worldwide</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-info-text">
+            <strong>Phone / WhatsApp</strong>
+            <span>+91 70468 34613</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">🌐</div>
+          <div class="contact-info-text">
+            <strong>Partner Website</strong>
+            <span>ascovita.com</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">⏰</div>
+          <div class="contact-info-text">
+            <strong>Working Hours</strong>
+            <span>Mon – Sat: 9:00 AM – 7:00 PM IST</span>
+          </div>
+        </div>
+        <a href="https://api.whatsapp.com/send?phone=917046834613&text=Hello%20Jayraf%20Export%2C%20I%20am%20interested%20in%20your%20export%20services." class="wa-contact-btn" target="_blank">
+          <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+
+      <div class="contact-form-wrap">
+        <div class="form-tabs">
+          <button class="form-tab active" onclick="switchTab('inquiry',this)">Product Inquiry</button>
+          <button class="form-tab" onclick="switchTab('meeting',this)">Book Meeting</button>
+        </div>
+
+        <div id="form-inquiry">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fi-name">Full Name *</label>
+              <input type="text" id="fi-name" placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label for="fi-company">Company</label>
+              <input type="text" id="fi-company" placeholder="Your company name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fi-email">Email *</label>
+              <input type="email" id="fi-email" placeholder="you@company.com">
+            </div>
+            <div class="form-group">
+              <label for="fi-country">Country *</label>
+              <input type="text" id="fi-country" placeholder="Your country">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fi-category">Product Category *</label>
+            <select id="fi-category">
+              <option value="">— Select Category —</option>
+              <option>Chemicals (Organic)</option>
+              <option>Chemicals (Inorganic)</option>
+              <option>Pharmaceuticals</option>
+              <option>Nutraceuticals</option>
+              <option>Agriculture Products</option>
+              <option>Medical & Surgical</option>
+              <option>Ayurvedic Herbs</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fi-message">Product Details / Requirements *</label>
+            <textarea id="fi-message" placeholder="Tell us what product you need, quantity, target price, destination country..."></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitForm('inquiry')">Send Inquiry →</button>
+          <div class="success-msg" id="msg-inquiry">✅ Inquiry sent! We'll reply within 24 hours. You can also WhatsApp us for instant response.</div>
+        </div>
+
+        <div id="form-meeting" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fm-name">Full Name *</label>
+              <input type="text" id="fm-name" placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label for="fm-company">Company</label>
+              <input type="text" id="fm-company" placeholder="Company name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fm-email">Email *</label>
+            <input type="email" id="fm-email" placeholder="you@company.com">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fm-date">Preferred Date *</label>
+              <input type="date" id="fm-date">
+            </div>
+            <div class="form-group">
+              <label for="fm-time">Preferred Time (IST) *</label>
+              <select id="fm-time">
+                <option>09:00 AM</option>
+                <option>10:00 AM</option>
+                <option>11:00 AM</option>
+                <option>12:00 PM</option>
+                <option>02:00 PM</option>
+                <option>03:00 PM</option>
+                <option>04:00 PM</option>
+                <option>05:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fm-topic">Meeting Topic</label>
+            <input type="text" id="fm-topic" placeholder="e.g. Pharma product sourcing discussion">
+          </div>
+          <div class="form-group">
+            <label for="fm-notes">Additional Notes</label>
+            <textarea id="fm-notes" style="min-height:80px" placeholder="Any specific questions or requirements..."></textarea>
+          </div>
+          <button class="submit-btn" onclick="submitForm('meeting')">Book Meeting →</button>
+          <div class="success-msg" id="msg-meeting">✅ Meeting request received! We'll confirm via email and WhatsApp within a few hours.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WhatsApp Float -->
+<a href="https://api.whatsapp.com/send?phone=917046834613&text=Hello%20Jayraf%20Export!" class="wa-float" target="_blank" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/mnt/user-data/uploads/Jayraf_log_no_bac_2.png" alt="Jayraf Export" onerror="this.style.display='none'">
+        <p style="margin-top:8px">India's trusted export partner for Chemicals, Pharmaceuticals, Nutraceuticals, Agriculture, Medical & Ayurvedic products. Official partner of Ascovita.com.</p>
+        <a href="https://api.whatsapp.com/send?phone=917046834613" style="color:var(--orange);font-size:14px;margin-top:16px;display:inline-block;text-decoration:none">📱 +91 70468 34613</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a onclick="showSection('home')">Home</a>
+        <a onclick="showSection('about')">About Us</a>
+        <a onclick="showSection('services')">Services</a>
+        <a onclick="showSection('contact')">Contact</a>
+        <a href="https://ascovita.com">Ascovita Partner</a>
+      </div>
+      <div class="footer-col">
+        <h5>Categories</h5>
+        <a onclick="showCategory('chemicals')">Chemicals</a>
+        <a onclick="showCategory('pharma')">Pharmaceuticals</a>
+        <a onclick="showCategory('nutra')">Nutraceuticals</a>
+        <a onclick="showCategory('agri')">Agriculture</a>
+        <a onclick="showCategory('medical')">Medical & Surgical</a>
+        <a onclick="showCategory('ayurveda')">Ayurvedic Herbs</a>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="https://api.whatsapp.com/send?phone=917046834613">💬 WhatsApp</a>
+        <a onclick="showSection('contact')">📧 Inquiry Form</a>
+        <a onclick="showSection('contact');setTimeout(()=>switchTab('meeting',document.querySelectorAll('.form-tab')[1]),100)">📅 Book Meeting</a>
+        <a href="https://ascovita.com">🌐 Ascovita.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Jayraf Export. All rights reserved. Made in India 🇮🇳</p>
+      <div class="footer-bottom-right">
+        <a>Privacy Policy</a>
+        <a>Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const categoryData = {
+  chemicals:{
+    icon:'🧪',title:'Chemicals',subtitle:'Organic & Inorganic Chemicals',color:'linear-gradient(135deg,#2D2B7A,#3D3B8A)',
+    desc:'We export a comprehensive range of organic and inorganic chemicals for industrial, pharmaceutical and laboratory applications worldwide.',
+    products:[
+      {name:'Acetic Acid',icon:'⚗️',cat:'Organic',desc:'99.5% pure glacial acetic acid for industrial use',specs:{'Purity':'≥99.5%','Grade':'Industrial / Lab','Packaging':'25L / 200L drums','Origin':'India'}},
+      {name:'Sodium Hydroxide',icon:'🧫',cat:'Inorganic',desc:'Caustic soda flakes and pellets for multiple applications',specs:{'Purity':'≥98%','Form':'Flakes / Pellets','Packaging':'25kg / 50kg bags','Origin':'India'}},
+      {name:'Sulphuric Acid',icon:'🔬',cat:'Inorganic',desc:'Commercial and battery-grade sulphuric acid',specs:{'Concentration':'98%','Grade':'Commercial','Packaging':'Carboys / Tankers','Origin':'India'}},
+      {name:'Ethanol',icon:'🧪',cat:'Organic',desc:'Absolute and rectified spirit for pharma and industrial use',specs:{'Purity':'99.9% / 95%','Grade':'Pharma / Industrial','Packaging':'50L / 200L','Origin':'India'}},
+      {name:'Hydrogen Peroxide',icon:'💧',cat:'Inorganic',desc:'35% and 50% H2O2 for bleaching and disinfection',specs:{'Concentration':'35% / 50%','Grade':'Technical','Packaging':'35kg / 250kg drums','Origin':'India'}},
+      {name:'Citric Acid',icon:'🍋',cat:'Organic',desc:'Food-grade and pharma-grade citric acid monohydrate',specs:{'Purity':'≥99.5%','Grade':'Food / Pharma','Packaging':'25kg bags','Origin':'India'}}
+    ]
+  },
+  pharma:{
+    icon:'💊',title:'Pharmaceuticals',subtitle:'WHO-GMP Certified Medicines & APIs',color:'linear-gradient(135deg,#1a4d6e,#2d6b9a)',
+    desc:'Export of WHO-GMP certified pharmaceutical products including APIs, generic formulations, tablets, capsules and injectable medications.',
+    products:[
+      {name:'Paracetamol API',icon:'💊',cat:'API',desc:'High-purity paracetamol active pharmaceutical ingredient',specs:{'Purity':'≥99%','Standard':'BP/USP/IP','Packaging':'25kg drums','Certification':'WHO-GMP'}},
+      {name:'Amoxicillin',icon:'💉',cat:'Antibiotic',desc:'Amoxicillin trihydrate API and finished formulations',specs:{'Purity':'≥98.5%','Form':'API / Capsules','Packaging':'25kg / Strips','Certification':'WHO-GMP'}},
+      {name:'Metformin HCl',icon:'🏥',cat:'Antidiabetic',desc:'Metformin API and 500mg / 1000mg tablets',specs:{'Purity':'≥99%','Form':'API / Tablets','Packaging':'Per requirement','Certification':'WHO-GMP'}},
+      {name:'Azithromycin',icon:'💊',cat:'Antibiotic',desc:'Azithromycin 250mg and 500mg tablet formulations',specs:{'Strength':'250mg / 500mg','Form':'Tablets','Packaging':'Strip / Bulk','Certification':'WHO-GMP'}},
+      {name:'Omeprazole',icon:'🔴',cat:'GI',desc:'Omeprazole 20mg / 40mg enteric-coated capsules',specs:{'Strength':'20mg / 40mg','Form':'Capsules','Packaging':'Strip / Bottle','Certification':'WHO-GMP'}},
+      {name:'Vitamin C Injection',icon:'💧',cat:'Injectable',desc:'Ascorbic acid IV injection for hospital use',specs:{'Strength':'500mg/5ml','Form':'Injectable','Packaging':'Ampoules','Certification':'WHO-GMP'}}
+    ]
+  },
+  nutra:{
+    icon:'🌿',title:'Nutraceuticals',subtitle:'Health Supplements & Functional Nutrition',color:'linear-gradient(135deg,#1a5c3a,#2d8a5a)',
+    desc:'Premium nutraceuticals and dietary supplements — official partner of Ascovita.com for enhanced product quality and international compliance.',
+    products:[
+      {name:'Ashwagandha Extract',icon:'🌿',cat:'Herbal Extract',desc:'5% Withanolides standardized ashwagandha root extract',specs:{'Standardization':'5% Withanolides','Form':'Powder / Capsule','Packaging':'25kg / Custom','Certification':'Organic'}},
+      {name:'Whey Protein',icon:'💪',cat:'Protein',desc:'80% whey protein concentrate for sports nutrition',specs:{'Protein':'≥80%','Form':'Powder','Packaging':'25kg / Retail','Source':'Bovine'}},
+      {name:'Vitamin D3',icon:'☀️',cat:'Vitamin',desc:'Cholecalciferol 1M IU/g with microencapsulation',specs:{'Potency':'1M IU/g','Form':'Powder / Oil','Packaging':'As required','Certification':'Kosher/Halal'}},
+      {name:'Omega-3 Softgels',icon:'🐟',cat:'Fatty Acids',desc:'Fish oil softgels with 300mg EPA+DHA per capsule',specs:{'EPA+DHA':'300mg/cap','Form':'Softgels','Packaging':'Bulk / Strip','Source':'Deep sea fish'}},
+      {name:'Probiotics Blend',icon:'🦠',cat:'Probiotic',desc:'Multi-strain probiotic with 30 billion CFU/serving',specs:{'CFU':'30 Billion','Strains':'10+','Form':'Capsule / Sachet','Stability':'Shelf-stable'}},
+      {name:'Collagen Peptides',icon:'✨',cat:'Collagen',desc:'Hydrolyzed marine collagen peptides Type I & III',specs:{'Type':'Type I & III','Source':'Marine','Form':'Powder','Packaging':'25kg bags'}}
+    ]
+  },
+  agri:{
+    icon:'🌾',title:'Agriculture Products',subtitle:'Premium Indian Agri Commodities',color:'linear-gradient(135deg,#5c4a00,#8a7000)',
+    desc:'Export of premium Indian agricultural commodities including spices, grains, pulses, oil seeds and processed food products.',
+    products:[
+      {name:'Turmeric',icon:'🟡',cat:'Spice',desc:'Erode and Rajapuri turmeric finger and powder',specs:{'Curcumin':'3-5%','Form':'Finger / Powder','Packaging':'25kg / 50kg','Grade':'Export quality'}},
+      {name:'Basmati Rice',icon:'🍚',cat:'Grain',desc:'Long-grain aged basmati rice 1121 and traditional',specs:{'Variety':'1121 / Traditional','Aging':'Min 12 months','Packaging':'5kg / 25kg / 50kg','Grade':'Premium export'}},
+      {name:'Red Chilli',icon:'🌶️',cat:'Spice',desc:'S4, Teja and Byadgi red chilli with and without stem',specs:{'Type':'S4 / Teja / Byadgi','Color':'Deep red','Packaging':'10kg / 25kg bags','Grade':'Export grade'}},
+      {name:'Cumin Seeds',icon:'🌿',cat:'Spice',desc:'Rajasthan bold cumin seeds with high oil content',specs:{'Origin':'Rajasthan','Oil Content':'≥3%','Packaging':'25kg bags','Grade':'Singapore / Europe'}},
+      {name:'Groundnut',icon:'🥜',cat:'Oil Seed',desc:'Java and Bold groundnut for oil and direct consumption',specs:{'Type':'Java / Bold','Moisture':'≤8%','Packaging':'50kg jute bags','Grade':'Export'}},
+      {name:'Sesame Seeds',icon:'🌻',cat:'Oil Seed',desc:'Natural white and black sesame seeds, hull and hull-less',specs:{'Type':'White / Black','Purity':'≥99%','Packaging':'25kg bags','Grade':'Food grade'}}
+    ]
+  },
+  medical:{
+    icon:'🩺',title:'Medical & Surgical',subtitle:'Medical Devices & Surgical Instruments',color:'linear-gradient(135deg,#5c1a1a,#8a2d2d)',
+    desc:'Comprehensive range of medical devices, surgical instruments, PPE, diagnostic equipment and hospital consumables for global healthcare.',
+    products:[
+      {name:'Surgical Gloves',icon:'🧤',cat:'PPE',desc:'Latex, nitrile and vinyl examination/surgical gloves',specs:{'Material':'Latex / Nitrile / Vinyl','Size':'XS, S, M, L, XL','Packaging':'100pcs/box','Certification':'CE/FDA'}},
+      {name:'Surgical Instruments Set',icon:'🔪',cat:'Surgical',desc:'Stainless steel surgical instrument sets for various procedures',specs:{'Material':'SS 304/316','Surface':'Mirror finish','Packaging':'Sterile / Non-sterile','Certification':'ISO 13485'}},
+      {name:'IV Cannula',icon:'💉',cat:'Disposable',desc:'Safety IV cannulas in all sizes with wings and port',specs:{'Sizes':'14G to 24G','Type':'Safety / Standard','Packaging':'100pcs/box','Certification':'CE/ISO'}},
+      {name:'Pulse Oximeter',icon:'❤️',cat:'Diagnostic',desc:'Fingertip pulse oximeter with SpO2 and PR monitoring',specs:{'Display':'OLED','Battery':'2x AAA','Accuracy':'±2%','Certification':'CE/FDA'}},
+      {name:'N95 Respirator',icon:'😷',cat:'PPE',desc:'NIOSH approved N95 filtering face-piece respirators',specs:{'Filtration':'≥95%','Type':'Flat fold / Cup','Packaging':'10pcs/bag','Certification':'NIOSH/CE'}},
+      {name:'Wound Dressing',icon:'🩹',cat:'Wound Care',desc:'Sterile gauze, foam and hydrocolloid wound dressings',specs:{'Types':'Gauze/Foam/Hydrocolloid','Sterility':'Gamma sterilized','Packaging':'Per piece / Box','Certification':'CE/ISO'}}
+    ]
+  },
+  ayurveda:{
+    icon:'🌱',title:'Ayurvedic Herbs',subtitle:'Pure Certified Ayurvedic Botanicals',color:'linear-gradient(135deg,#3a1a5c,#5a2d8a)',
+    desc:'Export of pure, certified Ayurvedic herbs, botanical extracts and traditional Indian medicinal plants with full documentation.',
+    products:[
+      {name:'Ashwagandha Root',icon:'🌱',cat:'Adaptogen',desc:'Withania somnifera dried root and root powder',specs:{'Part':'Root / Root powder','Withanolides':'1.5-5%','Packaging':'25kg / 50kg','Certification':'Organic available'}},
+      {name:'Turmeric Curcumin',icon:'🌿',cat:'Anti-inflammatory',desc:'Curcuma longa root and standardized curcumin extract',specs:{'Curcumin':'3% / 95%','Form':'Root / Extract','Packaging':'25kg bags','Certification':'Organic/Kosher'}},
+      {name:'Neem Products',icon:'🍃',cat:'Antibacterial',desc:'Neem leaf powder, seed oil and bark extracts',specs:{'Parts':'Leaf/Seed/Bark','Form':'Powder / Oil / Extract','Packaging':'As required','Certification':'Organic'}},
+      {name:'Brahmi (Bacopa)',icon:'🌀',cat:'Nootropic',desc:'Bacopa monnieri herb and 20% bacosides extract',specs:{'Bacosides':'20% standardized','Form':'Powder / Extract','Packaging':'25kg drums','Certification':'Organic'}},
+      {name:'Tulsi (Holy Basil)',icon:'🌿',cat:'Adaptogen',desc:'Ocimum sanctum leaf powder and essential oil',specs:{'Form':'Leaf powder / Oil','Eugenol':'≥70% in oil','Packaging':'25kg bags','Certification':'Organic'}},
+      {name:'Moringa Leaf',icon:'🌿',cat:'Superfood',desc:'Moringa oleifera dried leaf powder, organic certified',specs:{'Protein':'≥25%','Form':'Leaf powder / Extract','Packaging':'25kg bags','Certification':'Organic'}}
+    ]
+  }
+};
+
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const navEl=document.getElementById('nav-'+id);
+  if(navEl)navEl.classList.add('active');
+  document.getElementById('navLinks').classList.remove('open');
+  window.scrollTo(0,0);
+}
+
+function showCategory(catKey){
+  const cat=categoryData[catKey];
+  if(!cat)return;
+  const html=`
+    <div style="margin-bottom:48px">
+      <div style="background:${cat.color};border-radius:24px;padding:48px;margin-bottom:48px;position:relative;overflow:hidden">
+        <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.05);top:-100px;right:-80px"></div>
+        <span style="font-size:56px;display:block;margin-bottom:16px">${cat.icon}</span>
+        <h2 style="font-family:Syne,sans-serif;font-size:40px;font-weight:800;color:white;margin-bottom:8px;letter-spacing:-1px">${cat.title}</h2>
+        <p style="color:rgba(255,255,255,0.75);font-size:16px;line-height:1.7;max-width:600px">${cat.desc}</p>
+      </div>
+      <h3 style="font-family:Syne,sans-serif;font-size:28px;font-weight:700;color:var(--navy);margin-bottom:24px;letter-spacing:-0.5px">Products in this category</h3>
+      <div class="products-list">
+        ${cat.products.map((p,i)=>`
+          <div class="product-card" onclick="showProduct('${catKey}',${i})">
+            <div class="product-card-img">${p.icon}</div>
+            <h4>${p.name}</h4>
+            <p>${p.desc.substring(0,60)}...</p>
+            <div style="display:inline-flex;align-items:center;gap:4px;background:var(--gray-100);border-radius:40px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--navy);margin-top:8px">${p.cat}</div>
+            <div class="product-card-arrow">→</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('product-view-content').innerHTML=html;
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('product-view').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showProduct(catKey,idx){
+  const cat=categoryData[catKey];
+  const p=cat.products[idx];
+  const specsHtml=Object.entries(p.specs).map(([k,v])=>`
+    <div class="product-spec-row">
+      <span class="spec-label">${k}</span>
+      <span class="spec-value">${v}</span>
+    </div>
+  `).join('');
+  const waMsg=encodeURIComponent(`Hello Jayraf Export! I am interested in ${p.name}. Please share pricing and availability.`);
+  const html=`
+    <div class="product-view-header">
+      <div class="product-img-placeholder">${p.icon}</div>
+      <div class="product-info">
+        <div class="product-cat-badge">${cat.title}</div>
+        <h2>${p.name}</h2>
+        <p class="product-desc">${p.desc}</p>
+        <div class="product-specs">
+          <strong style="display:block;font-size:14px;color:var(--navy);margin-bottom:12px;font-family:Syne,sans-serif">Product Specifications</strong>
+          ${specsHtml}
+        </div>
+        <button class="inquiry-btn" onclick="showSection('contact')">📋 Send Product Inquiry</button>
+        <a href="https://api.whatsapp.com/send?phone=917046834613&text=${waMsg}" class="whatsapp-btn" target="_blank">
+          <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          WhatsApp Inquiry
+        </a>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-family:Syne,sans-serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:24px">More in ${cat.title}</h3>
+      <div class="products-list">
+        ${cat.products.filter((_,i)=>i!==idx).slice(0,3).map((op,i)=>{
+          const origIdx=cat.products.indexOf(op);
+          return`<div class="product-card" onclick="showProduct('${catKey}',${origIdx})">
+            <div class="product-card-img">${op.icon}</div>
+            <h4>${op.name}</h4>
+            <p>${op.desc.substring(0,60)}...</p>
+            <div class="product-card-arrow">→</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('product-view-content').innerHTML=html;
+  window.scrollTo(0,0);
+}
+
+function switchTab(tab,btn){
+  document.querySelectorAll('.form-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('form-inquiry').style.display=tab==='inquiry'?'block':'none';
+  document.getElementById('form-meeting').style.display=tab==='meeting'?'block':'none';
+}
+
+function submitForm(type){
+  const msg=document.getElementById('msg-'+type);
+  msg.classList.add('show');
+  setTimeout(()=>msg.classList.remove('show'),6000);
+}
+
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+}
+</script>
+</body>
+</html>
